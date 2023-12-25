@@ -16,11 +16,18 @@ Reformat points:
 
 e.g: 
 
-old format
-
-|Byte 0|Byte |Byte 2|Byte 3:5|Byte 6|Byte 7:262|Byte 263|
+**old format**
+|Byte 0|Byte 1|Byte 2|Byte 3:5|Byte 6|Byte 7:262|Byte 263|
 |---|---|---|---|---|---|---|
 |W: Write/R:Read|Byte Write/Read,Block Write/Read|'A'|Address|'D'|Data|endofframe(*)|
 
-new format: (TBD)
+**new format**
+|Byte 0|Byte 1|Byte 2|Byte 3:5|Byte 6:261|Byte 262|
+|---|---|---|---|---|---|---|
+|Write/Read|Byte Write/Read,Block Write/Read|DLC (includes Address & Data bytes)|Address|Data|endofframe(*)|
+
+From the proposed layout, 2 messages would be built between slave and master:
+- Message for Block operation
+- Message for Byte operation
+- Signal monitoring would be added to enhance E2E protection beside DLC check
 
