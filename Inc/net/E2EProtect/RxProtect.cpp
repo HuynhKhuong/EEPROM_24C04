@@ -15,13 +15,13 @@ namespace rbNet_E2EProtect {
 ///         Else return default value or set false returnValue = false
 /// \param MessageLayoutInterface &messageHandler: contains predefined DLC
 /// \param messageBuffer[] raw data buffer
-static bool rbNetProtect_DLCCheck(rbNetCOM::MessageHandlerInterface &messageHandler,
+static bool rbNetProtect_DLCCheck(NetCom::MessageHandlerInterface &messageHandler,
                                   const uint8_t *messageBuffer) 
 {
   bool returnValue{false};
   uint16_t DLCCount{0U};
   const char endOfFrameSymbl{'*'};
-  const uint16_t maxDataLength{rbNetCOM::g_maxDataLength};
+  const uint16_t maxDataLength{NetCom::g_maxDataLength};
   uint8_t* localBuffer{messageHandler.getLocalBuffer()};
 
   while ((*messageBuffer) != endOfFrameSymbl) 
@@ -52,11 +52,11 @@ static bool rbNetProtect_DLCCheck(rbNetCOM::MessageHandlerInterface &messageHand
 }
 
 bool blockMessageCbk(uint8_t *dataBuffer) {
-  return rbNetProtect_DLCCheck(rbNetCOM::g_blockMessageHandler, dataBuffer);
+  return rbNetProtect_DLCCheck(NetCom::g_blockMessageHandler, dataBuffer);
 }
 
 bool byteMessageCbk(uint8_t *dataBuffer) {
-  return rbNetProtect_DLCCheck(rbNetCOM::g_byteMessageHandler, dataBuffer);
+  return rbNetProtect_DLCCheck(NetCom::g_byteMessageHandler, dataBuffer);
 }
 
 } // End of namespace rbNet_E2EProtect

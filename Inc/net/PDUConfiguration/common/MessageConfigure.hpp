@@ -4,7 +4,7 @@
 #include <array>
 #include <cstdint>
 
-namespace rbNetCOM {
+namespace NetCom {
 
 using signalID = uint16_t;
 
@@ -84,6 +84,6 @@ struct SignalLayoutTypeDef {
   const uint16_t m_correspondingPDUIndex;
 };
 
-} // End of namespace rbNetCOM
+} // End of namespace NetCom
 
 #endif

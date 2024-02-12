@@ -5,7 +5,7 @@
 #include <array>
 #include "MessageConfigure.hpp"
 
-namespace rbNetCOM {
+namespace NetCom {
 
 /// \note declared as constexpr in .hpp file would be treated as const and
 /// inline variables ODR would never be broken
@@ -63,5 +63,5 @@ extern ByteMessageLayout g_byteMessageHandler;
 
 extern std::array<MessageHandlerInterface* const, g_numberOfMessages> g_messageConfigureTable;
 
-}// End of namespace rbNetCOM
+}// End of namespace NetCom
 #endif

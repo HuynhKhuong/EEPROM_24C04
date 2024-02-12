@@ -8,7 +8,7 @@
 ///        packets are defined depending on the layout of messages and their corresponding signals 
 ///        which are specific for each projects
 
-namespace rbNetCOM
+namespace NetCom
 {
 
 #ifdef DEBUG_SESSION
@@ -285,6 +285,6 @@ private:
 
 };
 
-}//End of namespace rbNetCOM
+}//End of namespace NetCom
 
 #endif

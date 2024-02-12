@@ -7,7 +7,7 @@
 
 #include "MessageListDefine.hpp"
 
-namespace rbNetCOM {
+namespace NetCom {
 
 constexpr uint8_t g_numberOfSignals{8U};
 constexpr uint16_t g_AddressSignalIDBlockMessage{0U};
@@ -61,5 +61,5 @@ constexpr std::array<SignalLayoutTypeDef, g_numberOfSignals> g_signalConfigureTa
                                                  // message, and the value to be monitored to
                                                  // handle E2E protection along with DLC check
     };
-} //End of namespace rbNetCOM
+} //End of namespace NetCom
 #endif

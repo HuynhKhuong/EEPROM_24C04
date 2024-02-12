@@ -11,7 +11,7 @@
 /// \note     NetRunnable is intended to be the interface of lower infrastructure, to be accessed from functional components.
 ///           As lower infrastructure is unique and exists only 1 entity inside the system, there exists only 1 instance of  
 ///           NetRunnable. Therefore, Singleton design pattern is taken in used
-namespace rbNetCOM
+namespace NetCom
 {
 class NetRunnable
 {

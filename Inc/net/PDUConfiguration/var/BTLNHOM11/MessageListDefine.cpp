@@ -11,7 +11,7 @@ bool blockMessageCbk(uint8_t *dataBuffer);
 bool byteMessageCbk(uint8_t *dataBuffer);
 }// End of namespace rbNet_E2EProtect
 
-namespace rbNetCOM
+namespace NetCom
 {
 constexpr MessageHandlerInterface::messageIDTypeDef g_blockMessageID{1U}; // 
 constexpr MessageHandlerInterface::messageIDTypeDef g_byteMessageID{0U}; // 
@@ -33,4 +33,4 @@ ByteMessageLayout g_byteMessageHandler(g_byteMessageID, rbNet_E2EProtect::byteMe
 
 std::array<MessageHandlerInterface* const, g_numberOfMessages> g_messageConfigureTable
           {&g_blockMessageHandler, &g_byteMessageHandler};
-}// End of namespace rbNetCOM
+}// End of namespace NetCom

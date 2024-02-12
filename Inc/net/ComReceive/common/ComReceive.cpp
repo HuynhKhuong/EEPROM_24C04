@@ -1,9 +1,9 @@
-#include <iostream>
+//#include <iostream>
 #include <cstdint>
 #include "ComReceive.hpp"
-#include "../var/BTLNHOM11/ContainerList.hpp"
+#include "ContainerList.hpp"
 
-namespace rbNetCOM {
+namespace NetCom {
 
 static inline void castingSignalType(const SignalLayoutTypeDef::SignalDataType type,
                                       const void* source, 
@@ -131,7 +131,7 @@ static void prv_ComSignalExtract(const SignalLayoutTypeDef &layoutInfo,
   }
 }
 
-void rbNetComReceive(uint8_t *dataBuffer) 
+void netComReceive(uint8_t *dataBuffer) 
 {
   const uint8_t messageIDIndex{0U};
   // get messageID
@@ -157,7 +157,7 @@ void rbNetComReceive(uint8_t *dataBuffer)
   if (messageIDMatched && messageE2EProtectPassed) 
   {
     // Trigger copy to internal signal buffer and set indication flag to true
-    rbNetComDispatchSignals(*msgHandlerPtr);
+    netComDispatchSignals(*msgHandlerPtr);
     msgHandlerPtr->setNewMessageReceivedFlag(true);
   } 
   else 
@@ -166,7 +166,7 @@ void rbNetComReceive(uint8_t *dataBuffer)
   }
 }
 
-void rbNetComDispatchSignals(MessageHandlerInterface &messageLayout) 
+void netComDispatchSignals(MessageHandlerInterface &messageLayout) 
 {
   const uint16_t numbOfSignals{messageLayout.getNumberOfSignals()};
   const uint16_t *signalList{messageLayout.getSignalIDList()};
@@ -201,7 +201,7 @@ void rbNetComDispatchSignals(MessageHandlerInterface &messageLayout)
   }
 }
 
-void rbNetComReceiveSignal(signalID ID, void *ptr)
+void netComReceiveSignal(signalID ID, void *ptr)
 {
   signalID tempID{ID};
   if(tempID >= g_numberOfSignals) {tempID = (g_numberOfSignals - 1U);}
@@ -251,4 +251,4 @@ void rbNetComReceiveSignal(signalID ID, void *ptr)
   }
 }
 
-} // End of namespace rbNetCOM
+} // End of namespace NetCom

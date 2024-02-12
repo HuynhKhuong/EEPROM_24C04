@@ -1,7 +1,7 @@
 #include "NetRunnable.hpp"
 #include "ComReceive.hpp"
 
-namespace rbNetCOM
+namespace NetCom
 {
 
 #ifdef DEBUG_SESSION
@@ -39,9 +39,9 @@ void NetRunnable::rxCustomerHook(void) //project specific as this function handl
     uint32_t addressSignalValue{0U};
     uint8_t operatorModeSignalIDByteMessage{0U};
 
-    rbNetComReceiveSignal(g_DataSignalIDByteMessage, static_cast<void*>(&dataSignalIDByteMessage));
-    rbNetComReceiveSignal(g_AddressSignalIDByteMessage, static_cast<void*>(&addressSignalValue));
-    rbNetComReceiveSignal(g_OperatorModeSignalIDByteMessage, static_cast<void*>(&operatorModeSignalIDByteMessage));
+    netComReceiveSignal(g_DataSignalIDByteMessage, static_cast<void*>(&dataSignalIDByteMessage));
+    netComReceiveSignal(g_AddressSignalIDByteMessage, static_cast<void*>(&addressSignalValue));
+    netComReceiveSignal(g_OperatorModeSignalIDByteMessage, static_cast<void*>(&operatorModeSignalIDByteMessage));
     
     byteDataRequestMemChunk.setByteDataSignalValue(dataSignalIDByteMessage);  
     byteDataRequestMemChunk.setAddressSignalValue(addressSignalValue);
@@ -54,9 +54,9 @@ void NetRunnable::rxCustomerHook(void) //project specific as this function handl
     uint32_t addressSignalValue{0U};
     uint8_t operatorModeSignalIDBlockMessage{0U};
 
-    rbNetComReceiveSignal(g_DataSignalIDBlockMessage, static_cast<void*>(&dataSignalIDBlockMessage));
-    rbNetComReceiveSignal(g_AddressSignalIDBlockMessage, static_cast<void*>(&addressSignalValue));
-    rbNetComReceiveSignal(g_OperatorModeSignalIDBlockMessage, static_cast<void*>(&operatorModeSignalIDBlockMessage));
+    netComReceiveSignal(g_DataSignalIDBlockMessage, static_cast<void*>(&dataSignalIDBlockMessage));
+    netComReceiveSignal(g_AddressSignalIDBlockMessage, static_cast<void*>(&addressSignalValue));
+    netComReceiveSignal(g_OperatorModeSignalIDBlockMessage, static_cast<void*>(&operatorModeSignalIDBlockMessage));
     
     blockDataRequestMemChunk.setBlockDataSignalValue(dataSignalIDBlockMessage);  
     blockDataRequestMemChunk.setAddressSignalValue(addressSignalValue);
@@ -76,5 +76,5 @@ void NetRunnable::deliver(ByteDataRequest& byteDataReceiverPtr, BlockDataRequest
   blockDataReceiverPtr = blockDataRequestMemChunk.deliver();
 }
 
-}//End of namespace rbNetCOM
+}//End of namespace NetCom
 

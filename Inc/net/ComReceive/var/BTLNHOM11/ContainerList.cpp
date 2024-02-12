@@ -1,6 +1,6 @@
 #include "ContainerList.hpp"
 
-namespace rbNetCOM
+namespace NetCom
 {
 uint8_t prvSignalTypeUint8_t[5U];
 uint32_t prvSignalTypeUint32_t[2U];
@@ -22,4 +22,4 @@ uint16_t signalLayoutToSignalContainerMap(uint16_t signalIndex)
   return prvsignalMappingTable[mappedIndex];
 }
 
-} // end of namespace rbNetCOM 
+} // end of namespace NetCom 

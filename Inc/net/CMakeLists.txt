@@ -20,6 +20,3 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/runnable)
 target_link_libraries(NetComponent PUBLIC E2EProtectLibrary)
 target_link_libraries(NetComponent PUBLIC ComReceiveKernelLibrary)
 target_link_libraries(NetComponent PUBLIC NetRunnableLibrary)
-
-#target_link_libraries(NetComponent PUBLIC PDUConfigurationLibrary)
-#target_link_libraries(NetComponent PUBLIC ContainerListLibrary )

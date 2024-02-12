@@ -3,7 +3,7 @@
 
 #include "ComReceive.hpp"
 
-namespace rbNetCOM{
+namespace NetCom{
 
 /// \brief This section is project specific, should be done by generating tool 
 constexpr uint8_t g_totalNumbersOfSignals{8U};
@@ -27,6 +27,6 @@ constexpr uint8_t prvsignalMappingTable[g_totalNumbersOfSignals]{
 
 uint16_t signalLayoutToSignalContainerMap(uint16_t signalIndex); 
 
-} // End of namespace rbNetCOM
+} // End of namespace NetCom
 
 #endif
