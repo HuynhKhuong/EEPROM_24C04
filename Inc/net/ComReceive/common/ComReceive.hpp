@@ -1,31 +1,33 @@
 #ifndef COMRECEIVE_HPP_INCLUDED
 #define COMRECEIVE_HPP_INCLUDED
 
-#include "../common/MessageConfigure.hpp"
-#include "../var/BTLNHOM11/MessageListDefine.hpp"
-#include "../var/BTLNHOM11/SignalListDefine.hpp"
+#include "SignalListDefine.hpp"
+#include "ContainerList.hpp"
 #include <cstdint>
 
-namespace rbNetCOM {
+namespace rbNetCOM{
 
 constexpr uint16_t g_maxDataLength{300U};
 
-struct InternalDataContainer {
+struct InternalDataContainer 
+{
   InternalDataContainer(uint8_t *signalTypeUint8_t,
                         uint16_t *signalTypeUint16_t,
-                        uint32_t *signalTypeUint32_t, float *signalTypeFloat)
-      : m_signalTypeUint8_t(signalTypeUint8_t),
-        m_signalTypeUint16_t(signalTypeUint16_t),
-        m_signalTypeUint32_t(signalTypeUint32_t),
-        m_signalTypeFloat(signalTypeFloat) {}
+                        uint32_t *signalTypeUint32_t, 
+                        float *signalTypeFloat, 
+                        uint8_t *signalTypeOthers):
+                        m_signalTypeUint8_t(signalTypeUint8_t),
+                        m_signalTypeUint16_t(signalTypeUint16_t),
+                        m_signalTypeUint32_t(signalTypeUint32_t),
+                        m_signalTypeFloat(signalTypeFloat), 
+                        m_signalTypeOthers(signalTypeOthers){}
 
   uint8_t *const m_signalTypeUint8_t;
   uint16_t *const m_signalTypeUint16_t;
   uint32_t *const m_signalTypeUint32_t;
   float *const m_signalTypeFloat;
+  uint8_t *const m_signalTypeOthers;
 };
-
-extern InternalDataContainer prvSignalContainer;
 
 /// \brief rbNetComReceive handles receiving message from master and dispatch
 /// messages to signals

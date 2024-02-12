@@ -32,7 +32,7 @@ constexpr std::array<SignalLayoutTypeDef, g_numberOfSignals> g_signalConfigureTa
                             SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
                             SignalLayoutTypeDef::SignalDataType::UINT32Type,
                             g_byteMessageIndex), // Address
-        SignalLayoutTypeDef(48, 256U,
+        SignalLayoutTypeDef(48, 2048U,
                             SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
                             SignalLayoutTypeDef::SignalDataType::OTHERS,
                             g_byteMessageIndex), // Block Data

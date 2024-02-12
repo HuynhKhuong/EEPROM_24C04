@@ -1,43 +1,10 @@
 #include <iostream>
 #include <cstdint>
 #include "ComReceive.hpp"
+#include "../var/BTLNHOM11/ContainerList.hpp"
 
 namespace rbNetCOM {
 
-/// \brief This section is project specific, should be done by generating tool 
-
-constexpr uint8_t g_totalNumbersOfSignals{8U};
-static uint8_t prvSignalTypeUint8_t[5U];
-static uint32_t prvSignalTypeUint32_t[2U];
-
-InternalDataContainer prvSignalContainer(&prvSignalTypeUint8_t[0U],
-                                         nullptr, // no uint16_t signals
-                                         &prvSignalTypeUint32_t[0U],
-                                         nullptr  // no float signal
-);
-
-static uint8_t prvsignalMappingTable[8U]{
-    0U, // g_AddressSignalIDBlockMessage{0U};
-    0U, // g_DataSignalIDByteMessage{1U};
-    1U, // g_AddressSignalIDByteMessage{2U};
-    0U, // g_DataSignalIDBlockMessage{3U}; // would be handled separately
-    1U, // g_OperatorModeSignalIDByteMessage{4U};
-    2U, // g_OperatorModeSignalIDBlockMessage{5U};
-    3U, // g_ModeSignalIDBlockMessage{6U};
-    4U, // g_ModeSignalIDByteMessage{7U};
-};
-
-static inline uint16_t signalLayoutToSignalContainerMap(uint16_t signalIndex) {
-  uint16_t mappedIndex{signalIndex};
-  if (signalIndex >= g_totalNumbersOfSignals) {
-    mappedIndex = 0U;
-  }
-
-  return prvsignalMappingTable[mappedIndex];
-}
-
-//-----------------------------------------------------------------------------//
-/// @brief Common part
 static inline void castingSignalType(const SignalLayoutTypeDef::SignalDataType type,
                                       const void* source, 
                                       void* destination)
@@ -102,6 +69,16 @@ static void prv_ComSignalExtract(const SignalLayoutTypeDef &layoutInfo,
   if (layoutInfo.m_dataType == SignalLayoutTypeDef::SignalDataType::OTHERS) 
   {
     // Other ways to handle this signal
+    uint16_t signalByteLength{static_cast<uint16_t>(layoutInfo.m_bitLength >> 3U)};
+    uint8_t* curBuffer = static_cast<uint8_t* const>(destinationBuffer);
+    uint16_t iterator{0U};
+
+    while(iterator < signalByteLength)
+    {
+      *curBuffer  = localBuffer[iterator + byteNumber];
+      curBuffer++;
+      iterator++;
+    }
   } 
   else 
   {
@@ -166,7 +143,8 @@ void rbNetComReceive(uint8_t *dataBuffer)
   // hook to get matched message handler
   MessageHandlerInterface* msgHandlerPtr{nullptr};
 
-  for (MessageHandlerInterface* const messageHandler: g_messageConfigureTable){
+  for (MessageHandlerInterface* const messageHandler: g_messageConfigureTable)
+  {
     if (messageHandler->m_messageID == messageID) 
     {
       messageE2EProtectPassed = messageHandler->m_cbkFnc(dataBuffer);
@@ -180,6 +158,7 @@ void rbNetComReceive(uint8_t *dataBuffer)
   {
     // Trigger copy to internal signal buffer and set indication flag to true
     rbNetComDispatchSignals(*msgHandlerPtr);
+    msgHandlerPtr->setNewMessageReceivedFlag(true);
   } 
   else 
   {
@@ -213,6 +192,59 @@ void rbNetComDispatchSignals(MessageHandlerInterface &messageLayout)
         prv_ComSignalExtract(signalInstance, localBuffer, static_cast<void*>(&(prvSignalContainer.m_signalTypeFloat[index])));
         break;
       case SignalLayoutTypeDef::SignalDataType::OTHERS:
+        {
+          prv_ComSignalExtract(signalInstance, localBuffer, static_cast<void*>(&(prvSignalContainer.m_signalTypeOthers[index])));
+        }
+      default:
+        break;
+    }
+  }
+}
+
+void rbNetComReceiveSignal(signalID ID, void *ptr)
+{
+  signalID tempID{ID};
+  if(tempID >= g_numberOfSignals) {tempID = (g_numberOfSignals - 1U);}
+  if(ptr != nullptr)
+  {
+    const SignalLayoutTypeDef& signalInstance{g_signalConfigureTable[tempID]};
+    const uint16_t index{signalLayoutToSignalContainerMap(tempID)};
+
+    switch(signalInstance.m_dataType) 
+    {
+      case SignalLayoutTypeDef::SignalDataType::UINT8Type:
+        castingSignalType(signalInstance.m_dataType, 
+                          static_cast<void*>(&(prvSignalContainer.m_signalTypeUint8_t[index])),
+                          ptr);
+        break;
+      case SignalLayoutTypeDef::SignalDataType::UINT16Type:
+        castingSignalType(signalInstance.m_dataType, 
+                          static_cast<void*>(&(prvSignalContainer.m_signalTypeUint16_t[index])),
+                          ptr);
+        break;
+      case SignalLayoutTypeDef::SignalDataType::UINT32Type:
+        castingSignalType(signalInstance.m_dataType, 
+                          static_cast<void*>(&(prvSignalContainer.m_signalTypeUint32_t[index])),
+                          ptr);
+        break;
+      case SignalLayoutTypeDef::SignalDataType::FLOATType:
+        castingSignalType(signalInstance.m_dataType, 
+                          static_cast<void*>(&(prvSignalContainer.m_signalTypeFloat[index])),
+                          ptr);
+        break;
+      case SignalLayoutTypeDef::SignalDataType::OTHERS:
+        {
+          uint16_t signalByteLength{static_cast<uint16_t>(signalInstance.m_bitLength >> 3U)};
+          uint16_t curIndex{index};
+          uint16_t iterator{0U};
+
+          while(iterator < signalByteLength)
+          {
+            static_cast<uint8_t*>(ptr)[iterator] = prvSignalContainer.m_signalTypeOthers[curIndex];  
+            curIndex++;
+            iterator++;
+          }
+        }
       default:
         break;
     }

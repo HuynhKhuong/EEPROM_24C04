@@ -1,7 +1,7 @@
 #include <iostream>
 #include "RxProtect.hpp"
-#include "../ComReceive/ComReceive.hpp"
-#include "../common/MessageConfigure.hpp"
+#include "ComReceive.hpp"
+#include "SignalListDefine.hpp"
 
 namespace rbNet_E2EProtect {
 
@@ -16,14 +16,16 @@ namespace rbNet_E2EProtect {
 /// \param MessageLayoutInterface &messageHandler: contains predefined DLC
 /// \param messageBuffer[] raw data buffer
 static bool rbNetProtect_DLCCheck(rbNetCOM::MessageHandlerInterface &messageHandler,
-                      const uint8_t *messageBuffer) {
+                                  const uint8_t *messageBuffer) 
+{
   bool returnValue{false};
   uint16_t DLCCount{0U};
   const char endOfFrameSymbl{'*'};
   const uint16_t maxDataLength{rbNetCOM::g_maxDataLength};
   uint8_t* localBuffer{messageHandler.getLocalBuffer()};
 
-  while ((*messageBuffer) != endOfFrameSymbl) {
+  while ((*messageBuffer) != endOfFrameSymbl) 
+  {
 
     //To prevent buffer overflow
     if(DLCCount < messageHandler.m_DLC)
@@ -34,13 +36,15 @@ static bool rbNetProtect_DLCCheck(rbNetCOM::MessageHandlerInterface &messageHand
     localBuffer++;
     messageBuffer++;
 
-    if (DLCCount == maxDataLength) {//Data Length reaches maximum allowed
+    if (DLCCount == maxDataLength) //Data Length reaches maximum allowed
+    {
       returnValue = false;
       break;
     }
   }
 
-  if (DLCCount == (messageHandler.m_DLC - 1U)) { //Data length counted locally eliminates EoF symbol
+  if (DLCCount == (messageHandler.m_DLC - 1U)) //Data length counted locally eliminates EoF symbol
+  {
     returnValue = true;
   }
 

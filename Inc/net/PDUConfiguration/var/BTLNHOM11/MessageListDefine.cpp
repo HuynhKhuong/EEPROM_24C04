@@ -16,13 +16,17 @@ namespace rbNetCOM
 constexpr MessageHandlerInterface::messageIDTypeDef g_blockMessageID{1U}; // 
 constexpr MessageHandlerInterface::messageIDTypeDef g_byteMessageID{0U}; // 
 
-signalID ByteMessageLayout::m_signalList[ByteMessageLayout::g_numberOfSignals]{
+signalID ByteMessageLayout::m_signalList[ByteMessageLayout::g_numberOfSignals]
+{
         g_AddressSignalIDByteMessage, g_DataSignalIDByteMessage,
-        g_OperatorModeSignalIDByteMessage, g_ModeSignalIDByteMessage};
+        g_OperatorModeSignalIDByteMessage, g_ModeSignalIDByteMessage
+};
 
-signalID BlockMessageLayout::m_signalList[BlockMessageLayout::g_numberOfSignals]{
+signalID BlockMessageLayout::m_signalList[BlockMessageLayout::g_numberOfSignals]
+{
         g_AddressSignalIDBlockMessage, g_DataSignalIDBlockMessage,
-        g_OperatorModeSignalIDBlockMessage, g_ModeSignalIDBlockMessage};
+        g_OperatorModeSignalIDBlockMessage, g_ModeSignalIDBlockMessage
+};
 
 BlockMessageLayout g_blockMessageHandler(g_blockMessageID, rbNet_E2EProtect::blockMessageCbk);
 ByteMessageLayout g_byteMessageHandler(g_byteMessageID, rbNet_E2EProtect::byteMessageCbk);

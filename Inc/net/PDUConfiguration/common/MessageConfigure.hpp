@@ -8,7 +8,8 @@ namespace rbNetCOM {
 
 using signalID = uint16_t;
 
-struct MessageHandlerInterface {
+struct MessageHandlerInterface 
+{
 public:
   using messageIDTypeDef = uint8_t;
   
@@ -26,6 +27,13 @@ public:
   virtual const uint16_t getNumberOfSignals(void) = 0; 
   virtual uint8_t* getLocalBuffer(void) = 0; //this API should be improved to be memory safe
 
+  ///getter and setter for m_isNewMessageReceived
+  void setNewMessageReceivedFlag(bool flag){m_isNewMessageReceived = flag;}
+  bool getNewMessageReceivedFlag() const 
+  { 
+    return m_isNewMessageReceived;
+  } 
+
 protected:
   bool m_isNewMessageReceived{false};
 
@@ -40,7 +48,8 @@ private:
 struct SignalLayoutTypeDef {
 
   enum class ByteOrderTypeDef : uint8_t { MOTOROLA = 0U, INTEL };
-  enum class SignalDataType : uint8_t {
+  enum class SignalDataType : uint8_t 
+  {
     UINT8Type = 0U,
     UINT16Type,
     UINT32Type,
@@ -54,7 +63,7 @@ struct SignalLayoutTypeDef {
                                 const SignalDataType &dataType,
                                 const uint16_t &correspondingPDUIndex)
       : m_startBit(startBit), m_bitLength(bitLength), m_byteOrder(byteOrder),
-        m_dataType(dataType), m_correspondingPDUIndex(correspondingPDUIndex) {}
+        m_dataType(dataType), m_correspondingPDUIndex(correspondingPDUIndex){}
 
   ///\brief signal layout (bytewise) diagram
   ///\note  x means occupied by signal
